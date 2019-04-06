@@ -3,15 +3,12 @@ package com.nativele.survivor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
 public class GameplayScene implements Scene {
 
     private Player player;
-    //private Point clickPoint;
     private Bitmap background, ground;
 
     public GameplayScene(){
@@ -20,9 +17,7 @@ public class GameplayScene implements Scene {
         ground = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.ground);
         ground = Bitmap.createScaledBitmap(ground, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT/10, true);
 
-        player = new Player(new Rect(Constants.SCREEN_WIDTH/2 - 100,Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH/2 - 100 + 200,Constants.SCREEN_HEIGHT - ground.getHeight()), Color.RED);
-        //playerPoint = new Point(Constants.SCREEN_WIDTH/2, Constants.SCREEN_HEIGHT - ground.getHeight());
-        //clickPoint = new Point();
+        player = new Player(new Rect(Constants.SCREEN_WIDTH/2 - 100,Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH/2 - 100 + 200,Constants.SCREEN_HEIGHT - ground.getHeight()));
         player.update();
     }
 
@@ -35,7 +30,6 @@ public class GameplayScene implements Scene {
 
     @Override
     public void update() {
-        //player.update();
         player.update();
     }
 
@@ -57,11 +51,12 @@ public class GameplayScene implements Scene {
             case MotionEvent.ACTION_DOWN :
 
                 if(event.getX() > Constants.SCREEN_WIDTH/2){
-                    player.state = Player.ATTACK_RIGHT;
-                } else player.state = Player.ATTACK_LEFT;
+                    player.attack("RIGHT");
+                } else {
+                    player.attack("LEFT");
+                }
 
-
-
+                
 
             //case MotionEvent.ACTION_MOVE :
                 //playerPoint.set((int)event.getX(), (int)event.getY());

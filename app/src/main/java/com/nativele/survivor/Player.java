@@ -3,13 +3,14 @@ package com.nativele.survivor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+
 public class Player implements Sprite {
+    //Faire en sorte que le projectile se lance uniquement lorsque l'animation d'attaque est terminée
 
     private Rect rectangle;
-    private int color;
 
     public static final int IDLE_RIGHT = 0;
     public static final int IDLE_LEFT = 1;
@@ -21,16 +22,17 @@ public class Player implements Sprite {
 
     private Animation idle_Right, idle_Left, attack_Right, attack_Left, die_right, die_left;
     private AnimationManager animationManager;
+    private ArrayList<Projectile> projectiles;
     public int state;
 
     public Rect getRectangle() {
         return rectangle;
     }
 
-    public Player(Rect rectangle, int color) {
+    public Player(Rect rectangle) {
         this.rectangle = rectangle;
-        this.color = color;
         this.state = IDLE_RIGHT;
+        this.projectiles = new ArrayList<Projectile>();
 
         BitmapFactory bitmapFactory = new BitmapFactory();
 
@@ -88,6 +90,10 @@ public class Player implements Sprite {
     @Override
     public void draw(Canvas canvas) {
         animationManager.draw(canvas, rectangle);
+
+        for(int i=0; i<projectiles.size(); i++){
+            projectiles.get(i).draw(canvas);
+        }
     }
 
     @Override
@@ -96,30 +102,29 @@ public class Player implements Sprite {
         animationManager.update();
         if(state == ATTACK_RIGHT && !attack_Right.isPlaying()) state = IDLE_RIGHT;
         if(state == ATTACK_LEFT && !attack_Left.isPlaying()) state = IDLE_LEFT;
+
+        for(int i=0; i<projectiles.size(); i++){
+            projectiles.get(i).update();
+        }
     }
 
-    public void update(Point point) {
-        //float oldLeft = rectangle.left;
+    public void attack(String direction){
+        int top = rectangle.centerY() - 80;
+        int bottom = rectangle.centerY() + 80;
+        int left, right;
 
-        //rectangle.set(point.x - rectangle.width()/2, point.y - rectangle.height()/2, point.x + rectangle.width()/2, point.y + rectangle.height()/2);
+        if(direction.equals("RIGHT")){
+            state = ATTACK_RIGHT;
+            left = rectangle.centerX();
+            right = left + 100;
+        }else{
+            state = ATTACK_LEFT;
+            right = rectangle.centerX();
+            left = right - 100;
+        }
 
-        //int state = 0;
+        Projectile projectile = new Projectile(new Rect(left, top, right, bottom), direction);
 
-        //if(point.x > Constants.SCREEN_WIDTH/2)
-
-        /*
-        if(rectangle.left - oldLeft > 5)
-            state = 0;
-
-        else if(rectangle.left - oldLeft < -5)
-            state = 2;
-         */
-        //System.out.println("State :" + state);
-
-        //if(!attack_Left.isPlaying() || !attack_Right.isPlaying()) state = IDLE_RIGHT;
-        //System.out.println("idle ??? --> " + idle_Right.isPlaying());
-
-        //animationManager.playAnim(state);
-        //animationManager.update();
+        projectiles.add(projectile);
     }
 }
