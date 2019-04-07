@@ -10,6 +10,7 @@ public class GameplayScene implements Scene {
 
     private Player player;
     private Bitmap background, ground;
+    private Monster monster;
 
     public GameplayScene(){
         background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.background);
@@ -19,6 +20,8 @@ public class GameplayScene implements Scene {
 
         player = new Player(new Rect(Constants.SCREEN_WIDTH/2 - 100,Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH/2 - 100 + 200,Constants.SCREEN_HEIGHT - ground.getHeight()));
         player.update();
+
+        monster = new Monster(new Rect(0, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, 200, Constants.SCREEN_HEIGHT - ground.getHeight() ));
     }
 
     /*
@@ -31,6 +34,7 @@ public class GameplayScene implements Scene {
     @Override
     public void update() {
         player.update();
+        monster.update();
     }
 
     @Override
@@ -38,6 +42,7 @@ public class GameplayScene implements Scene {
         canvas.drawBitmap(background, 0, 0, null); //background
         canvas.drawBitmap(ground, 0, Constants.SCREEN_HEIGHT - ground.getHeight(), null);  //ground
         player.draw(canvas);
+        monster.draw(canvas);
     }
 
     @Override
