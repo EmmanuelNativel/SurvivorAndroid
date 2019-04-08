@@ -17,6 +17,7 @@ public class Projectile implements Sprite {
     private AnimationManager animationManager;
     private int speed;
     private String direction;
+    public boolean toDestroy;
 
 
     public Projectile(Rect rectangle, String direction){
@@ -24,6 +25,7 @@ public class Projectile implements Sprite {
         this.rectangle = rectangle;
         this.speed = 50;
         this.direction = direction;
+        this.toDestroy = false;
 
         BitmapFactory bitmapFactory = new BitmapFactory();
 
@@ -56,7 +58,6 @@ public class Projectile implements Sprite {
         int bottom = rectangle.bottom;
 
         this.rectangle.set(left, top, right, bottom);
-
     }
 
 
@@ -70,5 +71,8 @@ public class Projectile implements Sprite {
         move();
         animationManager.playAnim(state);
         animationManager.update();
+        if(this.rectangle.centerX() < 0 || this.rectangle.centerX() > Constants.SCREEN_WIDTH){
+            this.toDestroy = true;
+        }
     }
 }

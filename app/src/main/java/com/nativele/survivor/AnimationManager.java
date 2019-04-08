@@ -8,9 +8,9 @@ public class AnimationManager {
     private int animationIndex = 0;
 
     public AnimationManager(Animation[] animations) {
+
         this.animations = animations;
     }
-
 
     public void playAnim(int index) {
         for(int i = 0; i < animations.length; i++) {

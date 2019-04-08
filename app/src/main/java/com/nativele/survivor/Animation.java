@@ -49,6 +49,8 @@ public class Animation {
         //scaleRect(destination);
 
         canvas.drawBitmap(frames[frameIndex], null, destination, new Paint());
+        //frames[frameIndex].recycle();
+        //frames[frameIndex] = null;
     }
 
     private void scaleRect(Rect rect) {

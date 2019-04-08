@@ -8,9 +8,9 @@ import android.view.MotionEvent;
 
 public class GameplayScene implements Scene {
 
-    private Player player;
+    public Player player;
     private Bitmap background, ground;
-    private Monster monster;
+    private Monster monsterR, monsterL;
 
     public GameplayScene(){
         background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.background);
@@ -19,9 +19,10 @@ public class GameplayScene implements Scene {
         ground = Bitmap.createScaledBitmap(ground, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT/10, true);
 
         player = new Player(new Rect(Constants.SCREEN_WIDTH/2 - 100,Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH/2 - 100 + 200,Constants.SCREEN_HEIGHT - ground.getHeight()));
-        player.update();
+        //player.update();
 
-        monster = new Monster(new Rect(0, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, 200, Constants.SCREEN_HEIGHT - ground.getHeight() ));
+        monsterR = new Monster(new Rect(0, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, 200, Constants.SCREEN_HEIGHT - ground.getHeight()), "golem", "right");
+        monsterL = new Monster(new Rect(Constants.SCREEN_WIDTH - 200, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT - ground.getHeight()), "golem", "left");
     }
 
     /*
@@ -33,8 +34,13 @@ public class GameplayScene implements Scene {
 
     @Override
     public void update() {
+
+        if(monsterR.playerCollide(player)) monsterR.attack();
+        if(monsterL.playerCollide(player)) monsterL.attack();
+
         player.update();
-        monster.update();
+        monsterR.update();
+        monsterL.update();
     }
 
     @Override
@@ -42,7 +48,8 @@ public class GameplayScene implements Scene {
         canvas.drawBitmap(background, 0, 0, null); //background
         canvas.drawBitmap(ground, 0, Constants.SCREEN_HEIGHT - ground.getHeight(), null);  //ground
         player.draw(canvas);
-        monster.draw(canvas);
+        monsterR.draw(canvas);
+        monsterL.draw(canvas);
     }
 
     @Override

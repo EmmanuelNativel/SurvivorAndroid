@@ -105,7 +105,11 @@ public class Player implements Sprite {
 
         for(int i=0; i<projectiles.size(); i++){
             projectiles.get(i).update();
+            if(projectiles.get(i).toDestroy) projectiles.remove(i);
         }
+
+        System.out.println(this.projectiles.size());
+
     }
 
     public void attack(String direction){

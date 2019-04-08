@@ -10,6 +10,8 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread thread;
     private SceneManager manager;
 
+
+
     public GameScene(Context context) {
         super(context);
 
@@ -17,6 +19,8 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
         Constants.CURRENT_CONTEXT = context;
         thread = new GameThread(getHolder(), this);
         manager = new SceneManager();
+
+
 
         setFocusable(true);
     }
