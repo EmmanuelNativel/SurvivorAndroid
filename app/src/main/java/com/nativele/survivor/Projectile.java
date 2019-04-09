@@ -75,4 +75,8 @@ public class Projectile implements Sprite {
             this.toDestroy = true;
         }
     }
+
+    public Rect getRectangle(){
+        return rectangle;
+    }
 }

@@ -131,4 +131,8 @@ public class Player implements Sprite {
 
         projectiles.add(projectile);
     }
+
+    public ArrayList<Projectile> getProjectiles(){
+        return projectiles;
+    }
 }

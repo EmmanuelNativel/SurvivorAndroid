@@ -9,8 +9,10 @@ import android.view.MotionEvent;
 public class GameplayScene implements Scene {
 
     public Player player;
-    private Bitmap background, ground;
-    private Monster monsterR, monsterL;
+    public Bitmap background, ground;
+    private MonsterGenerator monsterGeneratorRight;
+    //private Monster monsterR, monsterL;
+
 
     public GameplayScene(){
         background = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.background);
@@ -21,8 +23,10 @@ public class GameplayScene implements Scene {
         player = new Player(new Rect(Constants.SCREEN_WIDTH/2 - 100,Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH/2 - 100 + 200,Constants.SCREEN_HEIGHT - ground.getHeight()));
         //player.update();
 
-        monsterR = new Monster(new Rect(0, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, 200, Constants.SCREEN_HEIGHT - ground.getHeight()), "golem", "right");
-        monsterL = new Monster(new Rect(Constants.SCREEN_WIDTH - 200, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT - ground.getHeight()), "golem", "left");
+        monsterGeneratorRight = new MonsterGenerator(this, "right");
+
+        //monsterR = new Monster(this, new Rect(0, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, 200, Constants.SCREEN_HEIGHT - ground.getHeight()), "golem", "right", 1);
+        //monsterL = new Monster(this, new Rect(Constants.SCREEN_WIDTH - 200, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT - ground.getHeight()), "golem", "left", 1);
     }
 
     /*
@@ -35,12 +39,11 @@ public class GameplayScene implements Scene {
     @Override
     public void update() {
 
-        if(monsterR.playerCollide(player)) monsterR.attack();
-        if(monsterL.playerCollide(player)) monsterL.attack();
+        //if(monsterR.playerCollide(player)) monsterR.attack();
+        //if(monsterL.playerCollide(player)) monsterL.attack();
 
         player.update();
-        monsterR.update();
-        monsterL.update();
+        monsterGeneratorRight.update();
     }
 
     @Override
@@ -48,8 +51,7 @@ public class GameplayScene implements Scene {
         canvas.drawBitmap(background, 0, 0, null); //background
         canvas.drawBitmap(ground, 0, Constants.SCREEN_HEIGHT - ground.getHeight(), null);  //ground
         player.draw(canvas);
-        monsterR.draw(canvas);
-        monsterL.draw(canvas);
+        monsterGeneratorRight.draw(canvas);
     }
 
     @Override

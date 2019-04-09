@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import java.util.stream.Collector;
+
 
 public class Monster implements Sprite {
 
@@ -15,16 +17,21 @@ public class Monster implements Sprite {
     private AnimationManager animationManager;
     public Animation AnimMove, AnimAttack, AnimDie;
     public int state;
-    private int speed;
+    private int speed, sens, pv;
     private boolean stop;
     private String direction;
+    private GameplayScene scene;
+    private MonsterGenerator source;
 
-    public Monster(Rect rectangle, String type, String direction){
+    public Monster(GameplayScene scene, MonsterGenerator source, Rect rectangle, String type, String direction, int pv){
+        this.scene = scene;
+        this.source = source;
         this.rectangle = rectangle;
         this.state = MOVE;
-        this.speed = 5;
-        this.stop = false;
         this.direction = direction;
+        this.speed = 5;
+        this.sens = this.direction.equals("right") ? 1 : -1;
+        this.pv = pv;
 
         BitmapFactory bitmapFactory = new BitmapFactory();
 
@@ -63,7 +70,6 @@ public class Monster implements Sprite {
     }
 
     public void move(){
-        int sens = direction.equals("right") ? 1 : -1;
         this.state = MOVE;
 
         int left = rectangle.left + speed*sens;
@@ -78,6 +84,8 @@ public class Monster implements Sprite {
     public void die(){
         stop = true;
         this.state = DIE;
+        source.monsters.remove(this);
+        //rendre indétectable pour collisions
     }
 
     public void attack(){
@@ -87,6 +95,10 @@ public class Monster implements Sprite {
 
     public boolean playerCollide(Player player){
         return Rect.intersects(rectangle, player.getRectangle());
+    }
+
+    public boolean projectileCollide(Projectile projectile){
+        return Rect.intersects(rectangle, projectile.getRectangle());
     }
 
 
@@ -99,7 +111,23 @@ public class Monster implements Sprite {
     public void update() {
         if(!stop) move();
 
+        //Gestion des collisions avec les projectiles
+        for(int i=0; i<scene.player.getProjectiles().size(); i++){
+            Projectile projectile = scene.player.getProjectiles().get(i);
+            if(projectileCollide(projectile)){
+                die();
+                projectile.toDestroy = true;
+            }
+        }
+
+
         animationManager.playAnim(state);
         animationManager.update();
+
+
+    }
+
+    public Rect getRectangle(){
+        return rectangle;
     }
 }
