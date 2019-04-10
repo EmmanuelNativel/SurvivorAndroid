@@ -23,7 +23,7 @@ public class Menu extends Activity {
     }
 
     public void lunchScoreScreen(android.view.View view){
-        Intent intent = new Intent(view.getContext(), MainActivity.class);
+        Intent intent = new Intent(view.getContext(), Score.class);
         startActivity(intent);
     }
 
