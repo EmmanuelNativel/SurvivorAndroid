@@ -18,6 +18,5 @@ public class MainActivity extends Activity {
         Constants.SCREEN_WIDTH = this.getWindowManager().getDefaultDisplay().getWidth();
         Constants.SCREEN_HEIGHT = this.getWindowManager().getDefaultDisplay().getHeight();
         setContentView(new GameScene(this));
-
     }
 }

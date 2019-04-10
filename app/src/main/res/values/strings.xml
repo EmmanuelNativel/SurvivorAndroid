@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Survivor</string>
+    <string name="boutonMenuJouer">Jouer</string>
+    <string name="BoutonMenuScore">Score</string>
 </resources>
