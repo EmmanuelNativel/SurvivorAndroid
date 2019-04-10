@@ -12,7 +12,7 @@ import android.graphics.Rect;
 public class Monster implements Sprite {
 
     private Rect rectangle;
-    private int speed, sens, pv, color;
+    private int speed, sens, pv, color, value;
     private boolean stop;
     private String direction;
     private GameplayScene scene;
@@ -27,6 +27,7 @@ public class Monster implements Sprite {
         this.speed = 2;
         this.sens = this.direction.equals("right") ? 1 : -1;
         this.pv = pv;
+        this.value = this.pv;
         this.color = 0;
 
         int id = Constants.CURRENT_CONTEXT.getResources().getIdentifier(type+"_move_" +direction, "drawable", Constants.CURRENT_CONTEXT.getPackageName());
@@ -92,7 +93,10 @@ public class Monster implements Sprite {
             if(projectileCollide(this.scene.getPlayer().getProjectiles().get(i))){
                 this.scene.getPlayer().getProjectiles().get(i).setToDestroy(true);
                 beHurted();
-                if(this.pv == 0) destroy();
+                if(this.pv == 0) {
+                    this.scene.upgradeScore(this.value);
+                    destroy();
+                }
             }
         }
 

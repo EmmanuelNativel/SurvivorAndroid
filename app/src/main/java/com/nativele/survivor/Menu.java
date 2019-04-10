@@ -26,7 +26,4 @@ public class Menu extends Activity {
         Intent intent = new Intent(view.getContext(), MainActivity.class);
         startActivity(intent);
     }
-
-
-
 }
