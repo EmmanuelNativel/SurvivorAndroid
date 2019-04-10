@@ -28,7 +28,7 @@ public class GameplayScene implements Scene {
         this.background = Bitmap.createScaledBitmap(background, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, true);
         this.ground = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.ground);
         this.ground = Bitmap.createScaledBitmap(ground, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT/10, true);
-        
+
         this.scorePaint = new Paint();
         this.scorePaint.setColor(Color.WHITE);
         this.scorePaint.setTextSize(70);
