@@ -2,32 +2,27 @@ package com.nativele.survivor;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-
 import java.util.ArrayList;
+
 
 public class MonsterGenerator {
 
-    ArrayList<Monster> monsters;
+    private ArrayList<Monster> monsters;
     private String direction;
-    private int sens;
     private GameplayScene scene;
-
-    private int nbMonsterMax, limite;
+    private int nbMonsterMax;
     private boolean generationIsAllowed;
 
 
     public MonsterGenerator(GameplayScene scene, String direction){
         this.scene = scene;
-        this.monsters = new ArrayList<Monster>();
-        this.nbMonsterMax = 2;
+        this.monsters = new ArrayList<>();
+        this.nbMonsterMax = 0;
         this.generationIsAllowed = false;
         this.direction = direction;
-        this.sens = direction.equals("right") ? 1 : -1;
-        this.limite = 0;
     }
 
     public Monster chooseMonster(){
-        //tirer un nombre aléatoire
         String type;
         int pv, left, right, top, bottom;
         int nbAlea = (int)(Math.random() * ((10) + 1));
@@ -45,17 +40,18 @@ public class MonsterGenerator {
                 type = "golem";
                 pv = 2;
         }
-
+        int width = 200;
+        int height = 200;
         if(this.direction.equals("right")){
             left = 0;
-            top = Constants.SCREEN_HEIGHT - this.scene.ground.getHeight() - 200;
-            right = 200;
-            bottom = Constants.SCREEN_HEIGHT - this.scene.ground.getHeight();
+            top = Constants.SCREEN_HEIGHT - this.scene.getGround().getHeight()+20 - height;
+            right = width;
+            bottom = Constants.SCREEN_HEIGHT - this.scene.getGround().getHeight() + 20;
         } else{
-            left = Constants.SCREEN_WIDTH - 200;
-            top = Constants.SCREEN_HEIGHT - this.scene.ground.getHeight() - 200;
+            left = Constants.SCREEN_WIDTH - width;
+            top = Constants.SCREEN_HEIGHT - this.scene.getGround().getHeight() +20 - height;
             right = Constants.SCREEN_WIDTH;
-            bottom = Constants.SCREEN_HEIGHT - this.scene.ground.getHeight();
+            bottom = Constants.SCREEN_HEIGHT - this.scene.getGround().getHeight() + 20;
         }
 
         return new Monster(this.scene, this, new Rect(left, top, right, bottom), type, this.direction, pv);
@@ -69,12 +65,11 @@ public class MonsterGenerator {
             int distanceLimite = 200 + (int)(Math.random() * ((300 - 200) + 1));
             Monster lastMonster = monsters.get(monsters.size()-1);
             boolean didLastMonsterPassedLimit;
+
             if(this.direction.equals("right")){
-                this.limite = distanceLimite;
-                didLastMonsterPassedLimit = (lastMonster.getRectangle().centerX() > this.limite);
+                didLastMonsterPassedLimit = (lastMonster.getRectangle().centerX() > distanceLimite);
             } else {
-                this.limite = Constants.SCREEN_WIDTH - distanceLimite;
-                didLastMonsterPassedLimit = (lastMonster.getRectangle().centerX() < this.limite);
+                didLastMonsterPassedLimit = (lastMonster.getRectangle().centerX() < Constants.SCREEN_WIDTH - distanceLimite);
             }
 
 
@@ -87,12 +82,15 @@ public class MonsterGenerator {
             generationIsAllowed = true;
         }
 
-
         if(generationIsAllowed) {
             Monster monster = chooseMonster();
             this.monsters.add(monster);
             this.generationIsAllowed = false;
         }
+    }
+
+    public void cleanMonsters(){
+        monsters.clear();
     }
 
 
@@ -110,7 +108,9 @@ public class MonsterGenerator {
         }
     }
 
-
-
+    //accesseurs
+    public ArrayList<Monster> getMonsters(){
+        return monsters;
+    }
 
 }

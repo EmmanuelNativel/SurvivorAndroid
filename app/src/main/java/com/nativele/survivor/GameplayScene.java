@@ -8,9 +8,14 @@ import android.view.MotionEvent;
 
 public class GameplayScene implements Scene {
 
-    public Player player;
-    public Bitmap background, ground;
+    private Player player;
+    private Bitmap background, ground;
     private MonsterGenerator monsterGeneratorRight, monsterGeneratorLeft;
+
+    //Paramètres pour espacer les tirs du personnage
+    private long clickTime;
+    private boolean isShootAllowed;
+    private int shootTimeInterval;
 
 
 
@@ -21,31 +26,28 @@ public class GameplayScene implements Scene {
         ground = Bitmap.createScaledBitmap(ground, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT/10, true);
 
         player = new Player(new Rect(Constants.SCREEN_WIDTH/2 - 100,Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH/2 - 100 + 200,Constants.SCREEN_HEIGHT - ground.getHeight()));
-        //player.update();
 
         monsterGeneratorRight = new MonsterGenerator(this, "right");
         monsterGeneratorLeft = new MonsterGenerator(this, "left");
 
-        //monsterR = new Monster(this, new Rect(0, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, 200, Constants.SCREEN_HEIGHT - ground.getHeight()), "golem", "right", 1);
-        //monsterL = new Monster(this, new Rect(Constants.SCREEN_WIDTH - 200, Constants.SCREEN_HEIGHT - ground.getHeight() - 200, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT - ground.getHeight()), "golem", "left", 1);
-    }
+        isShootAllowed = true;
+        shootTimeInterval = 500; //ms
 
-    /*
-    public void reset(){
-        clickPoint = new Point(Constants.SCREEN_WIDTH/2, 3*Constants.SCREEN_HEIGHT/4);
-        player.update(clickPoint);
     }
-    */
 
     @Override
     public void update() {
 
-        //if(monsterR.playerCollide(player)) monsterR.attack();
-        //if(monsterL.playerCollide(player)) monsterL.attack();
+        if(System.currentTimeMillis() - clickTime > shootTimeInterval) isShootAllowed = true;
 
         player.update();
-        monsterGeneratorRight.update();
-        monsterGeneratorLeft.update();
+        if(!player.isGameOver()) {
+            monsterGeneratorRight.update();
+            monsterGeneratorLeft.update();
+        } else {
+            monsterGeneratorRight.cleanMonsters();
+            monsterGeneratorLeft.cleanMonsters();
+        }
     }
 
     @Override
@@ -58,26 +60,29 @@ public class GameplayScene implements Scene {
     }
 
     @Override
-    public void terminate() {
-        SceneManager.ACTIVE_SCENE = 0;
-    }
-
-    @Override
     public void recieveTouch(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
 
                 if(event.getX() > Constants.SCREEN_WIDTH/2){
-                    player.attack("RIGHT");
+
+                    if(isShootAllowed) {
+                        isShootAllowed = false;
+                        clickTime = System.currentTimeMillis();
+                        player.attack("RIGHT");
+                    }
                 } else {
-                    player.attack("LEFT");
+
+                    if(isShootAllowed) {
+                        isShootAllowed = false;
+                        clickTime = System.currentTimeMillis();
+                        player.attack("LEFT");
+                    }
                 }
-
-                
-
-            //case MotionEvent.ACTION_MOVE :
-                //playerPoint.set((int)event.getX(), (int)event.getY());
-
         }
     }
+
+    public Player getPlayer(){ return player; }
+    public Bitmap getGround(){ return ground; }
+
 }

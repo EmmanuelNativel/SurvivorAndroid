@@ -10,8 +10,6 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread thread;
     private SceneManager manager;
 
-
-
     public GameScene(Context context) {
         super(context);
 
@@ -20,20 +18,15 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
         thread = new GameThread(getHolder(), this);
         manager = new SceneManager();
 
-
-
         setFocusable(true);
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        
-    }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) { }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         thread = new GameThread(getHolder(), this);
-
         thread.setRunning(true);
         thread.start();
     }
@@ -54,9 +47,7 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
 
         manager.recieveTouch(event);
-
         return true;
-        //return super.onTouchEvent(event);
     }
 
     public void update() {

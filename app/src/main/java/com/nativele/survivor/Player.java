@@ -8,31 +8,26 @@ import android.graphics.Rect;
 import java.util.ArrayList;
 
 public class Player implements Sprite {
-    //Faire en sorte que le projectile se lance uniquement lorsque l'animation d'attaque est terminée
-
-    private Rect rectangle;
 
     public static final int IDLE_RIGHT = 0;
     public static final int IDLE_LEFT = 1;
     public static final int ATTACK_RIGHT = 2;
     public static final int ATTACK_LEFT = 3;
-    public static final int DIE_RIGHT = 4;
-    public static final int DIE_LEFT = 5;
+    public static final int DIE = 4;
 
-
-    private Animation idle_Right, idle_Left, attack_Right, attack_Left, die_right, die_left;
+    private Rect rectangle;
+    private Animation idle_Right, idle_Left, attack_Right, attack_Left, die;
     private AnimationManager animationManager;
     private ArrayList<Projectile> projectiles;
-    public int state;
-
-    public Rect getRectangle() {
-        return rectangle;
-    }
+    private int state;
+    private boolean isAlive, gameOver;
 
     public Player(Rect rectangle) {
         this.rectangle = rectangle;
         this.state = IDLE_RIGHT;
-        this.projectiles = new ArrayList<Projectile>();
+        this.projectiles = new ArrayList<>();
+        this.isAlive = true;
+        this.gameOver = false;
 
         BitmapFactory bitmapFactory = new BitmapFactory();
 
@@ -68,23 +63,40 @@ public class Player implements Sprite {
 
         attack_Left = new Animation(new Bitmap[]{attackLeft0, attackLeft1, attackLeft2, attackLeft3, attackLeft4}, 0.5f, false);
 
-        Bitmap dieRight0 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_right_000);
-        Bitmap dieRight1 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_right_001);
-        Bitmap dieRight2 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_right_002);
-        Bitmap dieRight3 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_right_003);
-        Bitmap dieRight4 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_right_004);
+        Bitmap die0 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_000);
+        Bitmap die1 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_001);
+        Bitmap die2 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_002);
+        Bitmap die3 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_003);
+        Bitmap die4 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_004);
 
-        die_right = new Animation(new Bitmap[]{dieRight0, dieRight1, dieRight2, dieRight3, dieRight4}, 0.5f, true);
+        die = new Animation(new Bitmap[]{die0, die1, die2, die3, die4}, 0.5f, false);
 
-        Bitmap dieLeft0 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_left_000);
-        Bitmap dieLeft1 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_left_001);
-        Bitmap dieLeft2 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_left_002);
-        Bitmap dieLeft3 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_left_003);
-        Bitmap dieLeft4 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.player_die_left_004);
+        animationManager = new AnimationManager(new Animation[]{idle_Right, idle_Left, attack_Right, attack_Left, die});
+    }
 
-        die_left = new Animation(new Bitmap[]{dieLeft0, dieLeft1, dieLeft2, dieLeft3, dieLeft4}, 0.5f, true);
+    public void die(){
+        isAlive = false;
+        state = DIE;
+    }
 
-        animationManager = new AnimationManager(new Animation[]{idle_Right, idle_Left, attack_Right, attack_Left, die_right, die_left});
+    public void attack(String direction){
+        if(isAlive) {
+            int top = rectangle.centerY() - 80;
+            int bottom = rectangle.centerY() + 80;
+            int left, right;
+
+            if (direction.equals("RIGHT")) {
+                state = ATTACK_RIGHT;
+                left = rectangle.centerX();
+                right = left + 100;
+            } else {
+                state = ATTACK_LEFT;
+                right = rectangle.centerX();
+                left = right - 100;
+            }
+
+            projectiles.add(new Projectile(new Rect(left, top, right, bottom), direction));
+        }
     }
 
     @Override
@@ -98,41 +110,30 @@ public class Player implements Sprite {
 
     @Override
     public void update() {
+
+        if(!isAlive && !animationManager.isAnimationPlaying(state)) {
+            this.gameOver = true;
+        }
+
         animationManager.playAnim(state);
         animationManager.update();
-        if(state == ATTACK_RIGHT && !attack_Right.isPlaying()) state = IDLE_RIGHT;
-        if(state == ATTACK_LEFT && !attack_Left.isPlaying()) state = IDLE_LEFT;
+        if(state == ATTACK_RIGHT && !attack_Right.isPlaying()) { state = IDLE_RIGHT; }
+        if(state == ATTACK_LEFT && !attack_Left.isPlaying()) { state = IDLE_LEFT; }
 
         for(int i=0; i<projectiles.size(); i++){
             projectiles.get(i).update();
-            if(projectiles.get(i).toDestroy) projectiles.remove(i);
+            if(projectiles.get(i).isToDestroy()) projectiles.remove(i);
         }
-
-        System.out.println(this.projectiles.size());
 
     }
 
-    public void attack(String direction){
-        int top = rectangle.centerY() - 80;
-        int bottom = rectangle.centerY() + 80;
-        int left, right;
-
-        if(direction.equals("RIGHT")){
-            state = ATTACK_RIGHT;
-            left = rectangle.centerX();
-            right = left + 100;
-        }else{
-            state = ATTACK_LEFT;
-            right = rectangle.centerX();
-            left = right - 100;
-        }
-
-        Projectile projectile = new Projectile(new Rect(left, top, right, bottom), direction);
-
-        projectiles.add(projectile);
-    }
-
+    //Accesseurs
     public ArrayList<Projectile> getProjectiles(){
         return projectiles;
+    }
+    public boolean isAlive(){ return isAlive; }
+    public boolean isGameOver(){ return gameOver; }
+    public Rect getRectangle() {
+        return rectangle;
     }
 }

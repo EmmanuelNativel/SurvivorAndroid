@@ -8,14 +8,13 @@ public class AnimationManager {
     private int animationIndex = 0;
 
     public AnimationManager(Animation[] animations) {
-
         this.animations = animations;
     }
 
     public void playAnim(int index) {
         for(int i = 0; i < animations.length; i++) {
             if(i == index) {
-                if(!animations[index].isPlaying() && !animations[index].haveToStop)
+                if(!animations[index].isPlaying() && !animations[index].haveToStop())
                     animations[i].play();
             } else
                 animations[i].stop();
@@ -31,5 +30,10 @@ public class AnimationManager {
     public void update() {
         if(animations[animationIndex].isPlaying())
             animations[animationIndex].update();
+    }
+
+    //Accesseurs
+    public boolean isAnimationPlaying(int index){
+        return animations[index].isPlaying();
     }
 }

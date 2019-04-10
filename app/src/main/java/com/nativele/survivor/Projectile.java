@@ -8,49 +8,36 @@ import android.graphics.Rect;
 public class Projectile implements Sprite {
 
     private Rect rectangle;
-
-    public static final int MOVE_RIGHT = 0;
-    public static final int MOVE_LEFT = 1;
-    public int state;
-
-    private Animation move_Right, move_Left;
-    private AnimationManager animationManager;
-    private int speed;
+    private Animation move;
+    private int speed, sens;
     private String direction;
-    public boolean toDestroy;
+    private boolean toDestroy;
 
 
     public Projectile(Rect rectangle, String direction){
 
         this.rectangle = rectangle;
         this.speed = 50;
-        this.direction = direction;
+        this.direction = direction.equals("RIGHT") ? "right" : "left";
         this.toDestroy = false;
+        if(direction.equals("RIGHT")){
+            this.direction = "right";
+            this.sens = 1;
+        } else {
+            this.direction = "left";
+            this.sens = -1;
+        }
 
-        BitmapFactory bitmapFactory = new BitmapFactory();
+        int id = Constants.CURRENT_CONTEXT.getResources().getIdentifier("projectile_"+this.direction+"_0", "drawable", Constants.CURRENT_CONTEXT.getPackageName());
+        Bitmap move0 = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), id);
 
-        Bitmap moveRight0 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.projectile_right_0);
-        Bitmap moveRight1 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.projectile_right_1);
+        id = Constants.CURRENT_CONTEXT.getResources().getIdentifier("projectile_"+this.direction+"_1", "drawable", Constants.CURRENT_CONTEXT.getPackageName());
+        Bitmap move1 = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), id);
 
-        move_Right = new Animation(new Bitmap[]{moveRight0, moveRight1}, 0.5f, true);
-
-        Bitmap moveLeft0 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.projectile_left_0);
-        Bitmap moveLeft1 = bitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.projectile_left_1);
-
-        move_Left = new Animation(new Bitmap[]{moveLeft0, moveLeft1}, 0.5f, true);
-
-        animationManager = new AnimationManager(new Animation[]{move_Right, move_Left});
+        this.move = new Animation(new Bitmap[]{move0, move1}, 0.5f, true);
     }
 
     public void move(){
-        int sens;
-        if(direction.equals("RIGHT")){
-            sens = 1;
-            this.state = MOVE_RIGHT;
-        } else {
-            sens = -1;
-            this.state = MOVE_LEFT;
-        }
 
         int left = rectangle.left + speed*sens;
         int top = rectangle.top;
@@ -63,20 +50,22 @@ public class Projectile implements Sprite {
 
     @Override
     public void draw(Canvas canvas) {
-        animationManager.draw(canvas, rectangle);
+        if(move.isPlaying()) move.draw(canvas, rectangle);
     }
 
     @Override
     public void update() {
         move();
-        animationManager.playAnim(state);
-        animationManager.update();
+        if(!move.isPlaying()) move.play();
+        if(move.isPlaying()) move.update();
+
         if(this.rectangle.centerX() < 0 || this.rectangle.centerX() > Constants.SCREEN_WIDTH){
             this.toDestroy = true;
         }
     }
 
-    public Rect getRectangle(){
-        return rectangle;
-    }
+    //Accesseurs
+    public Rect getRectangle(){ return rectangle; }
+    public boolean isToDestroy(){ return toDestroy; }
+    public void setToDestroy(boolean destroy){  this.toDestroy = destroy; }
 }

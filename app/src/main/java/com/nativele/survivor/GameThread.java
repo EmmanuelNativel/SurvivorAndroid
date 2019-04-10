@@ -5,7 +5,7 @@ import android.view.SurfaceHolder;
 
 public class GameThread extends Thread {
 
-    public static final int MAX_FPS = 30;
+    public static final int MAX_FPS = 60;
     private double averageFPS;
     private SurfaceHolder surfaceHolder;
     private GameScene gameScene;
@@ -16,8 +16,6 @@ public class GameThread extends Thread {
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameScene = gameScene;
-
-
     }
 
     @Override
