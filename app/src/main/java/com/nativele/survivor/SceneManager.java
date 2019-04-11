@@ -27,4 +27,5 @@ public class SceneManager {
         scenes.get(ACTIVE_SCENE).update();
     }
 
+    public GameplayScene getScene(){ return (GameplayScene)scenes.get(ACTIVE_SCENE); }
 }

@@ -1,5 +1,7 @@
 package com.nativele.survivor;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -9,6 +11,7 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameThread thread;
     private SceneManager manager;
+    private boolean gameOver;
 
     public GameScene(Context context) {
         super(context);
@@ -17,8 +20,10 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
         Constants.CURRENT_CONTEXT = context;
         thread = new GameThread(getHolder(), this);
         manager = new SceneManager();
+        gameOver = false;
 
         setFocusable(true);
+
     }
 
     @Override
@@ -33,15 +38,23 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry = true;
-        while(true) {
-            try {
-                thread.setRunning(false);
-                thread.join();
-            } catch(Exception e) {e.printStackTrace();}
-            retry = false;
-        }
+        Thread th = new Thread(){
+            @Override
+            public void run() {
+                try{
+                    thread.setRunning(false);
+                    thread.join();
+                } catch (Exception e){ e.printStackTrace(); }
+                finally {
+                    Intent intent = new Intent(Constants.GAME_CONTEXT, Menu.class);
+                    Constants.GAME_CONTEXT.startActivity(intent);
+                    ((Activity)Constants.GAME_CONTEXT).finish();
+                }
+            }
+        };
+        th.start();
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -51,7 +64,13 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        manager.update();
+        if(!gameOver) {
+            manager.update();
+            if (this.manager.getScene().getPlayer().isGameOver()) {
+                gameOver = true;
+                surfaceDestroyed(getHolder());
+            }
+        }
     }
 
     @Override

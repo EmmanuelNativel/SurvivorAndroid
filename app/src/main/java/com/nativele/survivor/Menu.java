@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.WindowManager;
-public class Menu extends Activity {
 
+public class Menu extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +15,7 @@ public class Menu extends Activity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.menu);
     }
+
 
     public void lunchGameScene(android.view.View view){
         Intent intent = new Intent(view.getContext(), MainActivity.class);

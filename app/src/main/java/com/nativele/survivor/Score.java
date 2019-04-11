@@ -1,5 +1,6 @@
 package com.nativele.survivor;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -62,5 +63,11 @@ public class Score extends AppCompatActivity{
         mListView.setAdapter(mArrayAdaptater);
 
         System.out.println(tableauScore);
+    }
+
+    public void backToMenu(android.view.View view){
+        Intent intent = new Intent(view.getContext(), Menu.class);
+        startActivity(intent);
+        finish();
     }
 }
