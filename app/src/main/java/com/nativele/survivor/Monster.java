@@ -24,7 +24,7 @@ public class Monster implements Sprite {
         this.source = source;
         this.rectangle = rectangle;
         this.direction = direction;
-        this.speed = 2;
+        this.speed = 3;
         this.sens = this.direction.equals("right") ? 1 : -1;
         this.pv = pv;
         this.value = this.pv;

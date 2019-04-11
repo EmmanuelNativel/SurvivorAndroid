@@ -95,6 +95,7 @@ public class GameplayScene implements Scene {
 
     public Player getPlayer(){ return player; }
     public Bitmap getGround(){ return ground; }
+    public int getScore(){ return score; }
     public void upgradeScore(int value){ this.score += value; }
 
 }

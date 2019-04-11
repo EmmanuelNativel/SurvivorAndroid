@@ -9,39 +9,37 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="378dp"
+        android:layout_width="602dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:text="GAME OVER"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="60dp"
+        android:textSize="70dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ScoreLabel"
-        android:layout_width="370dp"
+        android:layout_width="652dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:text="Score : "
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="40dp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -50,15 +48,15 @@
         android:layout_width="69dp"
         android:layout_height="21dp"
         android:text="Pseudo :"
-        android:textSize="18dp"
         android:textColor="@color/white"
+        android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/inputLabel"
         app:layout_constraintStart_toStartOf="@+id/inputLabel" />
 
     <EditText
         android:id="@+id/inputLabel"
-        android:layout_width="366dp"
-        android:layout_height="51dp"
+        android:layout_width="455dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
@@ -71,7 +69,6 @@
         android:textColorLink="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/valider"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.724"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -84,13 +81,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/btngameover"
         android:text="Valider"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="onClickBtnValider"/>
 

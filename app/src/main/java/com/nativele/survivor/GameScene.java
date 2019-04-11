@@ -46,7 +46,8 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
                     thread.join();
                 } catch (Exception e){ e.printStackTrace(); }
                 finally {
-                    Intent intent = new Intent(Constants.GAME_CONTEXT, Menu.class);
+                    Intent intent = new Intent(Constants.GAME_CONTEXT, GameOver.class);
+                    intent.putExtra("score",String.valueOf(manager.getScene().getScore()));
                     Constants.GAME_CONTEXT.startActivity(intent);
                     ((Activity)Constants.GAME_CONTEXT).finish();
                 }
