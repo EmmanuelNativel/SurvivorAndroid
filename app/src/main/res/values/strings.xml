@@ -4,4 +4,10 @@
     <string name="boutonMenuScore">Score</string>
     <string name="BtrtrScore">Retour</string>
     <string name="action_delete">Effacer</string>
+    <string name="Titre">SURVIVOR</string>
+    <string name="TitreFin">GAME OVER</string>
+    <string name="Score">Score :</string>
+    <string name="Pseudo">Pseudo :</string>
+    <string name="HintPseudo">Pseudo</string>
+    <string name="Valider">Valider</string>
 </resources>
