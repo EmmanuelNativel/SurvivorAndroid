@@ -2,5 +2,6 @@
     <string name="app_name">Survivor</string>
     <string name="boutonMenuJouer">Jouer</string>
     <string name="boutonMenuScore">Score</string>
-
+    <string name="BtrtrScore">Retour</string>
+    <string name="action_delete">Effacer</string>
 </resources>

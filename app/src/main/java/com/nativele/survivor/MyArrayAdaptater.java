@@ -1,6 +1,7 @@
 package com.nativele.survivor;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ public class MyArrayAdaptater extends ArrayAdapter {
 
         TextView label = (TextView)cellView.findViewById(R.id.label);
         String[] donnee = (String[]) getItem(position);
-        label.setText(" "+donnee[0]+" : "+donnee[1]);
+        label.setText(" "+donnee[0]+" : "+donnee[1]+" Le : "+donnee[2]);
 
         return cellView;
     }
