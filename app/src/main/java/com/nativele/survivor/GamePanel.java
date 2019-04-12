@@ -7,20 +7,22 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
+public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameThread thread;
-    private SceneManager manager;
     private boolean gameOver;
 
-    public GameScene(Context context) {
+    private GameplayScene gameScene;
+
+    public GamePanel(Context context) {
         super(context);
 
         getHolder().addCallback(this);
         Constants.CURRENT_CONTEXT = context;
         thread = new GameThread(getHolder(), this);
-        manager = new SceneManager();
         gameOver = false;
+
+        gameScene = new GameplayScene();
 
         setFocusable(true);
 
@@ -47,7 +49,7 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
                 } catch (Exception e){ e.printStackTrace(); }
                 finally {
                     Intent intent = new Intent(Constants.GAME_CONTEXT, GameOver.class);
-                    intent.putExtra("score",String.valueOf(manager.getScene().getScore()));
+                    intent.putExtra("score",String.valueOf(gameScene.getScore()));
                     Constants.GAME_CONTEXT.startActivity(intent);
                     ((Activity)Constants.GAME_CONTEXT).finish();
                 }
@@ -59,15 +61,14 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        manager.recieveTouch(event);
+        gameScene.recieveTouch(event);
         return true;
     }
 
     public void update() {
         if(!gameOver) {
-            manager.update();
-            if (this.manager.getScene().getPlayer().isGameOver()) {
+            gameScene.update();
+            if (gameScene.getPlayer().isGameOver()) {
                 gameOver = true;
                 surfaceDestroyed(getHolder());
             }
@@ -78,6 +79,6 @@ public class GameScene extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        manager.draw(canvas);
+        gameScene.draw(canvas);
     }
 }

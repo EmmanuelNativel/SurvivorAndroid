@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-public class GameplayScene implements Scene {
+public class GameplayScene{
 
     private Player player;
     private Bitmap background, ground;
@@ -45,7 +45,6 @@ public class GameplayScene implements Scene {
 
     }
 
-    @Override
     public void update() {
 
         if(System.currentTimeMillis() - clickTime > shootTimeInterval) isShootAllowed = true;
@@ -60,7 +59,6 @@ public class GameplayScene implements Scene {
         }
     }
 
-    @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, null); //background
         canvas.drawBitmap(ground, 0, Constants.SCREEN_HEIGHT - ground.getHeight(), null);  //ground
@@ -70,7 +68,6 @@ public class GameplayScene implements Scene {
         monsterGeneratorLeft.draw(canvas);
     }
 
-    @Override
     public void recieveTouch(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :

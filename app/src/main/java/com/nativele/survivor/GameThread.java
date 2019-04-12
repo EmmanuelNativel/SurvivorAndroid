@@ -8,11 +8,11 @@ public class GameThread extends Thread {
     public static final int MAX_FPS = 60;
     private double averageFPS;
     private SurfaceHolder surfaceHolder;
-    private GameScene gameScene;
+    private GamePanel gameScene;
     private boolean running;
     public static Canvas canvas;
 
-    public GameThread(SurfaceHolder surfaceHolder, GameScene gameScene){
+    public GameThread(SurfaceHolder surfaceHolder, GamePanel gameScene){
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameScene = gameScene;

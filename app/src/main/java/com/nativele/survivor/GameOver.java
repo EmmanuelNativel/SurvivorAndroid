@@ -45,11 +45,12 @@ public class GameOver extends Activity {
 
 
     public void onClickBtnValider(android.view.View view){
-        String pseudo = inputPseudo.getText().toString().trim()+","+strDate;
-        if(!pseudo.equals("")) {
+        String pseudo = inputPseudo.getText().toString().trim();
+        if(!pseudo.equals("") && pseudo != null) {
 
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
+            pseudo = pseudo +","+strDate;
             editor.putString(pseudo, score);
             editor.apply();
 

@@ -23,6 +23,6 @@ public class MainActivity extends Activity {
         Constants.SCREEN_HEIGHT = dm.heightPixels;
         Constants.GAME_CONTEXT = this;
 
-        setContentView(new GameScene(this));
+        setContentView(new GamePanel(this));
     }
 }
