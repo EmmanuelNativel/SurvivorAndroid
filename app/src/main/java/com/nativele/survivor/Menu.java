@@ -19,7 +19,7 @@ public class Menu extends Activity {
 
     public void lunchGameScene(android.view.View view){
         Intent intent = new Intent(view.getContext(), MainActivity.class);
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         startActivity(intent);
     }
 

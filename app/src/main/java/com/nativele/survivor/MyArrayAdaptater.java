@@ -23,11 +23,9 @@ public class MyArrayAdaptater extends ArrayAdapter {
             cellView = inflater.inflate(R.layout.cell_layout, parent, false);
         }
 
-        TextView nom = (TextView)cellView.findViewById(R.id.label);
-        TextView score = (TextView)cellView.findViewById(R.id.content);
+        TextView label = (TextView)cellView.findViewById(R.id.label);
         String[] donnee = (String[]) getItem(position);
-        nom.setText(donnee[0]);
-        score.setText(donnee[1]);
+        label.setText(" "+donnee[0]+" : "+donnee[1]);
 
         return cellView;
     }

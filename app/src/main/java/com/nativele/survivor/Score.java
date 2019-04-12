@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.ListView;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,6 +44,20 @@ public class Score extends AppCompatActivity{
             tableauScore[indice][1] = score;
 
             indice++;
+        }
+
+        // Tri des elements du tableau;
+        Arrays.sort(tableauScore, new java.util.Comparator<String[]>(){
+            public int compare(String[] a, String[] b){
+                return Integer.compare(Integer.parseInt(a[1]),Integer.parseInt(b[1]));
+            }
+        });
+
+        // On reverse le tableau des scores pour l'affichage.
+        for (int i=0; i < tableauScore.length/2;i++){
+            String[] temp = tableauScore[i];
+            tableauScore[i] = tableauScore[tableauScore.length-1 -i];
+            tableauScore[tableauScore.length-1 -i]= temp;
         }
 
         /*
