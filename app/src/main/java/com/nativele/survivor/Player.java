@@ -1,5 +1,10 @@
 package com.nativele.survivor;
 
+/*
+ * Classe Player
+ *
+ * */
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,6 +14,7 @@ import java.util.ArrayList;
 
 public class Player implements Sprite {
 
+    //Les différentes valeurs de la variable State
     public static final int IDLE_RIGHT = 0;
     public static final int IDLE_LEFT = 1;
     public static final int ATTACK_RIGHT = 2;
@@ -19,7 +25,7 @@ public class Player implements Sprite {
     private Animation idle_Right, idle_Left, attack_Right, attack_Left, die;
     private AnimationManager animationManager;
     private ArrayList<Projectile> projectiles;
-    private int state;
+    private int state; //variable qui permet de lancer la bonne animation
     private boolean isAlive, gameOver;
 
     public Player(Rect rectangle) {
@@ -28,6 +34,8 @@ public class Player implements Sprite {
         this.projectiles = new ArrayList<>();
         this.isAlive = true;
         this.gameOver = false;
+
+        //Chargement des images et création des animations
 
         BitmapFactory bitmapFactory = new BitmapFactory();
 
@@ -71,16 +79,23 @@ public class Player implements Sprite {
 
         die = new Animation(new Bitmap[]{die0, die1, die2, die3, die4}, 0.5f, false);
 
+        //Ajout des animations dans un AnimationManager
         animationManager = new AnimationManager(new Animation[]{idle_Right, idle_Left, attack_Right, attack_Left, die});
     }
 
+    /*
+     * Mort du player
+     */
     public void die(){
         isAlive = false;
         state = DIE;
     }
 
+    /*
+     * Attaque du player dans une direction donnée en paramètre ("RIGHT" ou "LEFT")
+     */
     public void attack(String direction){
-        if(isAlive) {
+        if(isAlive) { //Si le player est en vie
             int top = rectangle.centerY() - 80;
             int bottom = rectangle.centerY() + 80;
             int left, right;
@@ -95,6 +110,7 @@ public class Player implements Sprite {
                 left = right - 100;
             }
 
+            //Création du projectile à tirer
             projectiles.add(new Projectile(new Rect(left, top, right, bottom), direction));
         }
     }
@@ -111,7 +127,7 @@ public class Player implements Sprite {
     @Override
     public void update() {
 
-        if(!isAlive && !animationManager.isAnimationPlaying(state)) {
+        if(!isAlive && !animationManager.isAnimationPlaying(state)) { //Si le joueur est mort et que l'animation est terminée
             this.gameOver = true;
         }
 
@@ -122,7 +138,7 @@ public class Player implements Sprite {
 
         for(int i=0; i<projectiles.size(); i++){
             projectiles.get(i).update();
-            if(projectiles.get(i).isToDestroy()) projectiles.remove(i);
+            if(projectiles.get(i).isToDestroy()) projectiles.remove(i); //Destruction des projectiles qui ne sont plus utiles
         }
 
     }

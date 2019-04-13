@@ -1,5 +1,10 @@
 package com.nativele.survivor;
 
+/*
+ * Ecran Game Over
+ *
+ * */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +38,7 @@ public class GameOver extends Activity {
         date = new Date(calendar.get(Calendar.YEAR)-1900, calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         strDate = DateFormat.format("dd.MM.yyyy",date).toString();
 
+        //Le score est récupéré dans l'Intent
         score = (String) getIntent().getSerializableExtra("score");
 
         scoreLabel = findViewById(R.id.ScoreLabel);
@@ -46,18 +52,20 @@ public class GameOver extends Activity {
 
     public void onClickBtnValider(android.view.View view){
         String pseudo = inputPseudo.getText().toString().trim();
-        if(!pseudo.equals("") && pseudo != null) {
+        if(!pseudo.equals("") && pseudo != null) { //Si le champ texte n'est pas vide
 
+            //On stocke le score, le pseudo et la date dans le SharedPreferences
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             pseudo = pseudo +","+strDate;
             editor.putString(pseudo, score);
             editor.apply();
 
+            //On passe à l'écran Menu
             Intent intent = new Intent(view.getContext(), Menu.class);
             startActivity(intent);
             finish();
-        } else {
+        } else { //Si le champ est vide, on demande à le remplir
             inputPseudo.setHintTextColor(Color.RED);
             inputPseudo.getBackground().mutate().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_ATOP);
         }

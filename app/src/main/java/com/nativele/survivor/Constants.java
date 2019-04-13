@@ -1,5 +1,12 @@
 package com.nativele.survivor;
 
+/*
+ * Classe Constants
+ *
+ * Classe qui stocke les différentes constantes
+ *
+ * */
+
 import android.content.Context;
 
 public class Constants {

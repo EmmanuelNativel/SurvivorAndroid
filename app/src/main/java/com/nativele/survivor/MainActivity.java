@@ -1,5 +1,11 @@
 package com.nativele.survivor;
 
+/*
+ *
+ * Activité de l'écran de jeu
+ *
+ * */
+
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;

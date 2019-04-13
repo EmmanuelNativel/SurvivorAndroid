@@ -1,5 +1,12 @@
 package com.nativele.survivor;
 
+/*
+* Classe Monster
+*
+* Représente un monstre.
+* Le paramètre type (golem, gobelin ou knight) ainsi que la direction détermine quelles images de monstre doivent être générées.
+* */
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -30,10 +37,17 @@ public class Monster implements Sprite {
         this.value = this.pv;
         this.color = 0;
 
+        //Chargement de l'image correspondant au monstre souhaité.
         int id = Constants.CURRENT_CONTEXT.getResources().getIdentifier(type+"_move_" +direction, "drawable", Constants.CURRENT_CONTEXT.getPackageName());
         this.image = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), id);
     }
 
+    /*
+    *
+    * PARAMÈTRE :  une image et une couleur.
+    * RETOUR : l'image tintée avec la couleur souhaitée.
+    *
+     */
     public static Bitmap changeBitmapColor(Bitmap sourceBitmap, int color)
     {
         Bitmap resultBitmap = sourceBitmap.copy(sourceBitmap.getConfig(),true);
@@ -45,12 +59,18 @@ public class Monster implements Sprite {
         return resultBitmap;
     }
 
+    /*
+     * Retire un pv au monstre et change sa couleur en fonction de son nombre de pv restant
+     */
     public void beHurted(){
             this.pv -= 1;
             this.color = this.pv > 1 ? Color.rgb(255, 127, 0) : Color.RED;
             this.image = changeBitmapColor(this.image, color);
     }
 
+    /*
+     * Fait avancer le monstre en direction du joueur
+     */
     public void move(){
         int left = rectangle.left + speed*sens;
         int top = rectangle.top;
@@ -60,15 +80,30 @@ public class Monster implements Sprite {
         this.rectangle.set(left, top, right, bottom);
     }
 
+    /*
+     * Supression du monstre
+     */
     public void destroy(){
         stop = true;
         source.getMonsters().remove(this);
     }
 
+    /*
+     *
+     * PARAMÈTRE :  le player.
+     * RETOUR : vrai si le monstre entre en collision avec le joueur
+     *
+     */
     public boolean playerCollide(Player player){
         return Rect.intersects(rectangle, player.getRectangle());
     }
 
+    /*
+     *
+     * PARAMÈTRE :  un projectile.
+     * RETOUR : vrai si le monstre entre en collision avec le projectile.
+     *
+     */
     public boolean projectileCollide(Projectile projectile){
         return Rect.intersects(rectangle, projectile.getRectangle());
     }
@@ -83,7 +118,7 @@ public class Monster implements Sprite {
     public void update() {
         if(!stop) move();
 
-        if(playerCollide(this.scene.getPlayer())) {
+        if(playerCollide(this.scene.getPlayer())) { // Si le monstre en collision avec le joueur
             if(this.scene.getPlayer().isAlive()) this.scene.getPlayer().die();
             destroy();
         }
@@ -93,8 +128,8 @@ public class Monster implements Sprite {
             if(projectileCollide(this.scene.getPlayer().getProjectiles().get(i))){
                 this.scene.getPlayer().getProjectiles().get(i).setToDestroy(true);
                 beHurted();
-                if(this.pv == 0) {
-                    this.scene.upgradeScore(this.value);
+                if(this.pv == 0) { //Si le monstre est mort
+                    this.scene.upgradeScore(this.value);  //on augmente le score
                     destroy();
                 }
             }

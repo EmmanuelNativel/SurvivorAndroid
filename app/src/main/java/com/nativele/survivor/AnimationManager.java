@@ -1,5 +1,12 @@
 package com.nativele.survivor;
 
+/*
+ * Classe AnimationManager
+ *
+ * Classe qui prend en paramètre un tableau d'Animations et gère l'éxécution des différentes animations d'un objet
+ *
+ * */
+
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
@@ -11,6 +18,10 @@ public class AnimationManager {
         this.animations = animations;
     }
 
+    /*
+     * PARAMETRE : l'index de l'animation à lancer
+     * Lance l'animation ciblée
+     */
     public void playAnim(int index) {
         for(int i = 0; i < animations.length; i++) {
             if(i == index) {

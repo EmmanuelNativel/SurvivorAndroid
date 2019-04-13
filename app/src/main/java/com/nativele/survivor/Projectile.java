@@ -1,5 +1,10 @@
 package com.nativele.survivor;
 
+/*
+ * Classe Projectile
+ *
+ * */
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,15 +33,21 @@ public class Projectile implements Sprite {
             this.sens = -1;
         }
 
+        //Chargement des images pour l'animation en fonction de la direction souhaitée
+
         int id = Constants.CURRENT_CONTEXT.getResources().getIdentifier("projectile_"+this.direction+"_0", "drawable", Constants.CURRENT_CONTEXT.getPackageName());
         Bitmap move0 = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), id);
 
         id = Constants.CURRENT_CONTEXT.getResources().getIdentifier("projectile_"+this.direction+"_1", "drawable", Constants.CURRENT_CONTEXT.getPackageName());
         Bitmap move1 = BitmapFactory.decodeResource(Constants.CURRENT_CONTEXT.getResources(), id);
 
+        //Création de l'animation
         this.move = new Animation(new Bitmap[]{move0, move1}, 0.5f, true);
     }
 
+    /*
+     * Déplace le projectile dans la bonne direction
+     */
     public void move(){
 
         int left = rectangle.left + speed*sens;
@@ -59,6 +70,7 @@ public class Projectile implements Sprite {
         if(!move.isPlaying()) move.play();
         if(move.isPlaying()) move.update();
 
+        //Si le projectile sort de l'écran, on le détruit
         if(this.rectangle.centerX() < 0 || this.rectangle.centerX() > Constants.SCREEN_WIDTH){
             this.toDestroy = true;
         }

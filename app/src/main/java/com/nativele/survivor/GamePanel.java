@@ -1,4 +1,12 @@
 package com.nativele.survivor;
+
+/*
+ * Classe GamePanel
+ *
+ * Représente la surface du jeu
+ *
+ * */
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +29,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         Constants.CURRENT_CONTEXT = context;
         thread = new GameThread(getHolder(), this);
         gameOver = false;
-
         gameScene = new GameplayScene();
 
         setFocusable(true);
@@ -40,6 +47,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        //Lorsque la surface est détruite, on lance un thread qui va s'occuper de terminer le gameThread
+        //et d'envoyer un Intent pour communiquer le score à la vue gameOver
         Thread th = new Thread(){
             @Override
             public void run() {

@@ -1,5 +1,11 @@
 package com.nativele.survivor;
 
+/*
+ *
+ * Ecran du menu
+ *
+ * */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -16,13 +22,14 @@ public class Menu extends Activity {
         setContentView(R.layout.menu);
     }
 
-
+    //Lancement du jeu
     public void lunchGameScene(android.view.View view){
         Intent intent = new Intent(view.getContext(), MainActivity.class);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         startActivity(intent);
     }
 
+    //lancement de la liste des scores
     public void lunchScoreScreen(android.view.View view){
         Intent intent = new Intent(view.getContext(), Score.class);
         startActivity(intent);

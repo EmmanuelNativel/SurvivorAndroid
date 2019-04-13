@@ -1,5 +1,10 @@
 package com.nativele.survivor;
 
+/*
+ * MyArrayAdapter : représente uen cellule de la liste des scores
+ *
+ * */
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;

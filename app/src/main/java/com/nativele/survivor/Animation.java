@@ -1,5 +1,13 @@
 package com.nativele.survivor;
 
+/*
+ * Classe Animation
+ *
+ * Classe qui prend en paramètre un tableau d'image, une durée d'animation et un booléen qui
+ * détermine si l'animation doit se répéter à l'inifi à pas.
+ *
+ * */
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -21,17 +29,23 @@ public class Animation {
         this.haveToStop = false;
         frameIndex = 0;
 
-        frameTime = animTime/frames.length;
+        frameTime = animTime/frames.length; //Temps d'affichage d'une image
 
         lastFrame = System.currentTimeMillis();
     }
 
+    /*
+     * Lance l'animation
+     */
     public void play() {
             isPlaying = true;
             frameIndex = 0;
             lastFrame = System.currentTimeMillis();
     }
 
+    /*
+     * Stop l'animation
+     */
     public void stop() {
         isPlaying = false;
         haveToStop = false;
@@ -41,27 +55,18 @@ public class Animation {
 
     public void draw(Canvas canvas, Rect destination) {
         if(!isPlaying) return;
-        //scaleRect(destination);
         canvas.drawBitmap(frames[frameIndex], null, destination, new Paint());
     }
-
-    /* private void scaleRect(Rect rect) {
-        float whRatio = (float)(frames[frameIndex].getWidth())/frames[frameIndex].getHeight();
-        if(rect.width() > rect.height())
-            rect.left = rect.right - (int)(rect.height() * whRatio);
-        else
-            rect.top = rect.bottom - (int)(rect.width() * (1/whRatio));
-    } */
 
     public void update() {
         if(!isPlaying)
             return;
 
-        if(System.currentTimeMillis() - lastFrame > frameTime*1000) {
+        if(System.currentTimeMillis() - lastFrame > frameTime*1000) { //Test si le temps d'affichage d'une image est passé ou pas
             frameIndex++;
-            if(frameIndex >= frames.length){
-                if(repeat) frameIndex = 0;
-                else {
+            if(frameIndex >= frames.length){ //Si toutes les images ont été affichées
+                if(repeat) frameIndex = 0; //Si l'animation doit se répéter à l'infini, on relance l'animation depuis la première image
+                else { //Sinon on arrête
                     this.stop();
                     this.haveToStop = true; //Empêche le manager d'animation de relancer l'animation
                 }

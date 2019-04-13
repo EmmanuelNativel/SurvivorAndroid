@@ -1,5 +1,12 @@
 package com.nativele.survivor;
 
+/*
+ * Classe GameplayScene
+ *
+ * Classe qui représente la scène de jeu.
+ *
+ * */
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -62,7 +69,7 @@ public class GameplayScene{
     public void draw(Canvas canvas) {
         canvas.drawBitmap(background, 0, 0, null); //background
         canvas.drawBitmap(ground, 0, Constants.SCREEN_HEIGHT - ground.getHeight(), null);  //ground
-        canvas.drawText("Score : " + this.score, Constants.SCREEN_WIDTH/2 - 100, 100, this.scorePaint );
+        canvas.drawText("Score : " + this.score, Constants.SCREEN_WIDTH/2 - 100, 100, this.scorePaint ); //score
         player.draw(canvas);
         monsterGeneratorRight.draw(canvas);
         monsterGeneratorLeft.draw(canvas);
@@ -72,7 +79,7 @@ public class GameplayScene{
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN :
 
-                if(event.getX() > Constants.SCREEN_WIDTH/2){
+                if(event.getX() > Constants.SCREEN_WIDTH/2){ //click à droite
 
                     if(isShootAllowed) {
                         isShootAllowed = false;
@@ -81,7 +88,7 @@ public class GameplayScene{
                     }
                 } else {
 
-                    if(isShootAllowed) {
+                    if(isShootAllowed) {  //click à gauche
                         isShootAllowed = false;
                         clickTime = System.currentTimeMillis();
                         player.attack("LEFT");

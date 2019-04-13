@@ -1,5 +1,12 @@
 package com.nativele.survivor;
 
+/*
+ * Classe GameThread
+ *
+ * Classe qui permet de créer une game loop (fonction exécutée inféniniement)
+ *
+ * */
+
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
